@@ -9,20 +9,47 @@ from datetime import datetime
 
 # App Insights
 # TODO: Import required libraries for App Insights
+from opencensus.ext.azure import metrics_exporter
+from opencensus.ext.azure.log_exporter import AzureEventHandler, AzureLogHandler
+from opencensus.ext.azure.trace_exporter import AzureExporter
+from opencensus.ext.flask.flask_middleware import FlaskMiddleware
+from opencensus.stats import aggregation as aggregation_module
+from opencensus.stats import measure as measure_module
+from opencensus.stats import stats as stats_module
+from opencensus.stats import view as view_module
+from opencensus.tags import tag_map as tag_map_module
+from opencensus.trace.samplers import ProbabilitySampler
+from opencensus.trace.tracer import Tracer
 
 # Logging
-logger = # TODO: Setup logger
+# TODO: Setup logger
+logger = logging.getLogger(__name__)
+logger.addHandler(AzureLogHandler(connection_string='InstrumentationKey=abefa20b-aadd-4180-a4c1-1395d04ca0e1'))
+logger.addHandler(AzureEventHandler(connection_string='InstrumentationKey=abefa20b-aadd-4180-a4c1-1395d04ca0e1'))
 
 # Metrics
-exporter = # TODO: Setup exporter
+# TODO: Setup exporter
+exporter = exporter = metrics_exporter.new_metrics_exporter(
+  enable_standard_metrics=True,
+  connection_string='InstrumentationKey=abefa20b-aadd-4180-a4c1-1395d04ca0e1')
 
 # Tracing
-tracer = # TODO: Setup tracer
+# TODO: Setup tracer
+tracer = Tracer(
+    exporter=AzureExporter(
+        connection_string='InstrumentationKey=abefa20b-aadd-4180-a4c1-1395d04ca0e1'),
+    sampler=ProbabilitySampler(1.0),
+)
 
 app = Flask(__name__)
 
 # Requests
-middleware = # TODO: Setup flask middleware
+# TODO: Setup flask middleware
+middleware = middleware = FlaskMiddleware(
+    app,
+    exporter=AzureExporter(connection_string="InstrumentationKey=abefa20b-aadd-4180-a4c1-1395d04ca0e1"),
+    sampler=ProbabilitySampler(rate=1.0),
+)
 
 # Load configurations from environment or config file
 app.config.from_pyfile('config_file.cfg')
@@ -99,6 +126,6 @@ def index():
 
 if __name__ == "__main__":
     # TODO: Use the statement below when running locally
-    app.run() 
+    #app.run() 
     # TODO: Use the statement below before deployment to VMSS
-    # app.run(host='0.0.0.0', threaded=True, debug=True) # remote
+    app.run(host='0.0.0.0', threaded=True, debug=True) # remote

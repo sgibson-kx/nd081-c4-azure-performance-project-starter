@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # Variables
-resourceGroup="acdnd-c4-project"
-location="westus"
+resourceGroup="azureperf-resourcegroup"
+location="australiasoutheast"
 osType="UbuntuLTS"
-vmssName="udacity-vmss"
-adminName="udacityadmin"
-storageAccount="udacitydiag$RANDOM"
+vmssName="azureperf-vmss"
+adminName="useradmin"
+storageAccount="azureperfstorageaccount"
 bePoolName="$vmssName-bepool"
 lbName="$vmssName-lb"
-lbRule="$lbName-network-rule"
+lbRule="$lbName-networkrule"
 nsgName="$vmssName-nsg"
 vnetName="$vmssName-vnet"
 subnetName="$vnetName-subnet"
-probeName="tcpProbe"
+probeName="azureperf-tcpProbe"
 vmSize="Standard_B1s"
 storageType="Standard_LRS"
 
