@@ -31,7 +31,7 @@ view_manager = stats.view_manager
 config_integration.trace_integrations(['logging'])
 config_integration.trace_integrations(['requests'])
 logger = logging.getLogger(__name__)
-logger.addHandler(AzureLogHandler(connection_string='InstrumentationKey=abefa20b-aadd-4180-a4c1-1395d04ca0e1'))
+handler = logger.addHandler(AzureLogHandler(connection_string='InstrumentationKey=abefa20b-aadd-4180-a4c1-1395d04ca0e1'))
 handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
 logger.addHandler(handler)
 logger.addHandler(AzureEventHandler(connection_string='InstrumentationKey=abefa20b-aadd-4180-a4c1-1395d04ca0e1'))
